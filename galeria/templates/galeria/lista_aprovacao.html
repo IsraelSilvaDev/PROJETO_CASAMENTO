@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Fotos Pendentes de Aprovação</h1>
+
+{% if fotos %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Preview</th>
+                <th>Enviada por</th>
+                <th>Legenda</th>
+                <th>Data</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for foto in fotos %}
+            <tr>
+                <td><img src="{{ foto.imagem.url }}" alt="preview" style="width: 100px; height: 75px; object-fit: cover;"></td>
+                <td>{{ foto.autor.username }}</td>
+                <td>{{ foto.legenda|default:"-" }}</td>
+                <td>{{ foto.data_upload|date:"d/m/Y H:i" }}</td>
+                <td>
+                    <form action="{% url 'aprovar_foto' foto.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-success">Aprovar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-success" role="alert">
+    Parabéns! Não há nenhuma foto pendente de aprovação.
+</div>
+{% endif %}
+{% endblock %}

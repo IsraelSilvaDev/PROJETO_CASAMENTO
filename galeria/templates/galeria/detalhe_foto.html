@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <img src="{{ foto.imagem.url }}" class="card-img-top" alt="{{ foto.legenda }}">
+            <div class="card-body">
+                <p class="card-text">{{ foto.legenda }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Enviada por: {{ foto.autor.first_name|default:foto.autor.username }}</small>
+                    <form action="{% url 'curtir_foto' foto.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link text-danger text-decoration-none">
+                            {% if curtido %}
+                                <i class="bi bi-heart-fill"></i> Descurtir
+                            {% else %}
+                                <i class="bi bi-heart"></i> Curtir
+                            {% endif %}
+                            ({{ foto.total_curtidas }})
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h3 class="mb-3">Comentários ({{ comentarios.count }})</h3>
+            {% if user.is_authenticated %}
+            <form method="post" class="mb-4">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{ comentario_form.texto }}
+                    <button class="btn btn-outline-primary" type="submit">Comentar</button>
+                </div>
+            </form>
+            {% else %}
+            <p><a href="{% url 'login' %}">Faça login</a> para deixar um comentário.</p>
+            {% endif %}
+
+            {% for comentario in comentarios %}
+            <div class="d-flex mb-3">
+                <div class="flex-shrink-0"><i class="bi bi-person-circle fs-4"></i></div>
+                <div class="ms-3">
+                    <strong>{{ comentario.autor.first_name|default:comentario.autor.username }}</strong>
+                    <small class="text-muted ms-2">{{ comentario.data_criacao|timesince }} atrás</small>
+                    <div>{{ comentario.texto }}</div>
+                </div>
+            </div>
+            {% empty %}
+            <p>Seja o primeiro a comentar!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

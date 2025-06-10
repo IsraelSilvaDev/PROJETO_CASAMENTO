@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Enviar Foto{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>Envie sua Foto</h3>
+            </div>
+            <div class="card-body">
+                <p>Compartilhe suas memórias do nosso dia especial. Após o envio, sua foto passará por uma rápida aprovação antes de aparecer na galeria.</p>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.imagem.id_for_label }}" class="form-label">Escolha a imagem</label>
+                        {{ form.imagem }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.legenda.id_for_label }}" class="form-label">Legenda (opcional)</label>
+                        {{ form.legenda }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar Foto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

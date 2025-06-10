@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+    <h1 class="mt-3">Obrigado!</h1>
+    <p class="lead">Sua foto foi enviada com sucesso e está aguardando aprovação.</p>
+    <a href="{% url 'galeria_principal' %}" class="btn btn-primary">Voltar para a Galeria</a>
+</div>
+{% endblock %}

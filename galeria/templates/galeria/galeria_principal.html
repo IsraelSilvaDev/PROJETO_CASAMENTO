@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1>Nossa Galeria de Memórias</h1>
+    <p class="lead">Veja as fotos incríveis tiradas pelos nossos amigos e familiares!</p>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    {% for foto in fotos %}
+    <div class="col">
+        <div class="card shadow-sm h-100">
+            <a href="{% url 'detalhe_foto' foto.id %}">
+                <img src="{{ foto.imagem.url }}" class="card-img-top-grid" alt="{{ foto.legenda|truncatewords:5 }}">
+            </a>
+            <div class="card-body">
+                <p class="card-text">{{ foto.legenda|default:"Sem legenda"|truncatechars:100 }}</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <small class="text-muted">Por: {{ foto.autor.first_name|default:foto.autor.username }}</small>
+                <span class="text-danger"><i class="bi bi-heart-fill"></i> {{ foto.total_curtidas }}</span>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+        <p>Ainda nenhuma foto foi adicionada. Seja o primeiro!</p>
+        {% if user.is_authenticated %}
+            <a href="{% url 'upload_foto' %}" class="btn btn-primary">Enviar Foto</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">Faça login para enviar uma foto</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
