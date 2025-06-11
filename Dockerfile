@@ -1,4 +1,4 @@
-FROM python: 3
+FROM python: 3.11-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -11,4 +11,4 @@ COPY requirements.txt /code/
 RUN pip install -r /code/requirements.txt
 
 ADD . /code/
-EXPOSE 8000q
+EXPOSE 8000
